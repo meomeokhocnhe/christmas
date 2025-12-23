@@ -23,6 +23,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 16px;
+  overflow-x: hidden;
 }
 
 .container {
@@ -35,7 +36,7 @@ body {
 .box {
   background: #8b1e2d;
   padding: 24px 20px;
-  border: 4px solid #ffffff;
+  border: 4px solid #fff;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 0 25px rgba(255,0,0,.35);
@@ -91,24 +92,49 @@ button:hover {
   color: #000;
 }
 
+/* ❄️ TUYẾT NHẸ */
 .snow {
   pointer-events: none;
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(white 1px, transparent 1px),
-    radial-gradient(white 1px, transparent 1px);
-  background-size: 18px 18px, 28px 28px;
-  animation: snow 16s linear infinite;
-  opacity: .7;
+    radial-gradient(white 0.8px, transparent 1px),
+    radial-gradient(white 0.6px, transparent 1px);
+  background-size: 26px 26px, 36px 36px;
+  animation: snow 28s linear infinite;
+  opacity: .45;
   z-index: 0;
 }
 
 @keyframes snow {
-  from { background-position: 0 0, 0 0; }
+  from { background-position: 0 -100px, 0 -200px; }
   to { background-position: 0 100vh, 0 100vh; }
 }
 
+/* 🎀 STICKER BAY NHẸ */
+.sticker {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  opacity: 0.8;
+  animation: floatSticker linear forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes floatSticker {
+  from {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.8; }
+  to {
+    transform: translateY(-120vh) translateX(40px) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* 🎄 Tree */
 .tree {
   display: flex;
   flex-direction: column;
@@ -142,6 +168,7 @@ button:hover {
   margin-top: 4px;
 }
 
+/* 🎆 Fireworks */
 #fireworks {
   position: fixed;
   inset: 0;
@@ -162,7 +189,7 @@ button:hover {
   to { transform: scale(5); opacity: 0; }
 }
 
-/* ===== MODAL ===== */
+/* 💬 Modal */
 .modal {
   position: fixed;
   inset: 0;
@@ -198,11 +225,6 @@ button:hover {
 }
 
 .hidden { display: none; }
-
-@media (max-width: 480px) {
-  p { font-size: 13px; }
-  h1 { font-size: 20px; }
-}
 </style>
 </head>
 
@@ -212,7 +234,7 @@ button:hover {
 <div id="fireworks"></div>
 
 <audio id="bgm" loop>
-  <source src="./crmtree.mp3" type="audio/mpeg">
+  <source src="./snowfall.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
@@ -220,7 +242,7 @@ button:hover {
   <!-- LOCK -->
   <div class="box" id="lock">
     <h2>🔒 hehe</h2>
-    <p class="hint">Một ngày…<br>nào đó có 4 số :> </p>
+    <p class="hint">Một ngày…<br>nào đó có 4 chữ số!!? ❄️</p>
     <input id="code" type="password" maxlength="4" placeholder="****">
     <button onclick="unlock()">MỞ QUÀ 🎁</button>
     <p id="error"></p>
@@ -228,7 +250,7 @@ button:hover {
 
   <!-- PAGE 1 -->
   <div class="box hidden" id="page1">
-    <h1>🎄 Merry christmas</h1>
+    <h1>🎄 Merry Christmas</h1>
     <div class="tree">
       <div class="layer small"></div>
       <div class="layer dark"></div>
@@ -236,16 +258,13 @@ button:hover {
       <div class="trunk"></div>
     </div>
     <p id="typeText"></p>
-    <button onclick="goPage2()">Tiếp nè 👉</button>
+    <button onclick="goPage2()">Trang sauuu</button>
   </div>
 
   <!-- PAGE 2 -->
   <div class="box hidden" id="page2">
     <h1>Một lời hỏi nhỏ</h1>
-    <p id="movieText">
-      Ngày 26, 29, 31,... hoặc là ngày nào đó của tháng 1<br>
-      bạn đi xem Avatar 3 với t nhé :>
-    </p>
+    <p>Ngày 26, 29, 31, hoặc 1 ngày nào đó vào tháng 1<br>bạn đi xem Avatar 3 với t nhé?</p>
     <button onclick="yes()">YES!!</button>
     <button id="thinkBtn" class="secondary" onclick="think()">Để xem...</button>
     <p id="thinkMsg"></p>
@@ -264,32 +283,27 @@ button:hover {
 <!-- THINK MODAL -->
 <div id="thinkModal" class="modal">
   <div class="modal-box">
-    <p>Thật sự cần để suy nghĩ à?...</p>
+    <p>Thật sự cần để suy nghĩ à...?</p>
     <button onclick="closeThinkModal()">Ừm…</button>
   </div>
 </div>
 
 <script>
 const music = document.getElementById("bgm");
-const lines = [
-  "Chúc bạn giáng sinh vui vẻ nhé!! ❄️",
-];
-
-let lineIndex = 0;
-let charIndex = 0;
+const lines = ["Giáng sinh vui vẻ ❄️"];
+let lineIndex = 0, charIndex = 0;
 let thinkCount = 0;
 
+/* 🔐 Unlock */
 function unlock() {
   const v = code.value;
-  const msg = document.getElementById("passMessage");
+  if (v === "2602") passMessage.innerText = "hình như bạn nhớ đến mình :>";
+  else if (v === "0208") passMessage.innerText = "vì bạn nên mùa đông ấm áp";
+  else if (v === "0611") passMessage.innerText = "hình như bạn nhớ đến một ngày rất rất đặc biệt";
+  else { error.innerText = "❌ Chưa đúng rồi… thử lại nhé 🎄"; return; }
 
-  if (v === "2602") msg.innerText = "hình như bạn nhớ đến mình :>";
-  else if (v === "0208") msg.innerText = "vì bạn nên mùa đông ấm áp";
-  else if (v === "0611") msg.innerText = "hình như bạn nhớ đến một ngày rất rất đặc biệt của chúng ta";
-  else {
-    error.innerText = "❌ Chưa đúng rồi… thử lại nhé 🎄";
-    return;
-  }
+  music.volume = 0.4;
+  music.play().catch(()=>{});
   passModal.classList.add("show");
 }
 
@@ -297,21 +311,18 @@ function closeModal() {
   passModal.classList.remove("show");
   lock.classList.add("hidden");
   page1.classList.remove("hidden");
-  music.play();
   typeWriter();
 }
 
+/* ✍️ Typewriter */
 function typeWriter() {
   if (lineIndex >= lines.length) return;
-  const el = typeText;
   if (charIndex < lines[lineIndex].length) {
-    el.innerHTML += lines[lineIndex][charIndex++];
+    typeText.innerHTML += lines[lineIndex][charIndex++];
     setTimeout(typeWriter, 60);
   } else {
-    el.innerHTML += "<br>";
-    lineIndex++;
-    charIndex = 0;
-    setTimeout(typeWriter, 400);
+    typeText.innerHTML += "<br>";
+    lineIndex++; charIndex = 0;
   }
 }
 
@@ -320,31 +331,47 @@ function goPage2() {
   page2.classList.remove("hidden");
 }
 
+/* 🤔 Think logic */
 function think() {
   thinkCount++;
   thinkMsg.innerText = "Sai rồi, chọn lại điiii";
-
   if (thinkCount > 5) {
     thinkModal.classList.add("show");
     thinkBtn.classList.add("hidden");
   }
 }
-
 function closeThinkModal() {
   thinkModal.classList.remove("show");
 }
 
+/* 💖 YES */
 function yes() {
   for (let i = 0; i < 26; i++) {
     const f = document.createElement("div");
     f.className = "firework";
-    f.style.left = Math.random() * innerWidth + "px";
-    f.style.top = Math.random() * innerHeight + "px";
+    f.style.left = Math.random()*innerWidth+"px";
+    f.style.top = Math.random()*innerHeight+"px";
     fireworks.appendChild(f);
-    setTimeout(() => f.remove(), 1000);
+    setTimeout(()=>f.remove(),1000);
   }
-  setTimeout(() => alert("Hẹn bạn ở rạp nhé 💖🍿"), 400);
+  setTimeout(()=>alert("Hẹn bạn ở rạp nhé 💖🍿"),400);
 }
+
+/* 🎀 STICKER BAY NHẸ */
+const stickers = ["⭐", "✨", "💖", "🎄", "❄️"];
+
+function spawnSticker() {
+  const s = document.createElement("div");
+  s.className = "sticker";
+  s.innerText = stickers[Math.floor(Math.random() * stickers.length)];
+  s.style.left = Math.random() * window.innerWidth + "px";
+  s.style.animationDuration = (18 + Math.random() * 10) + "s";
+  s.style.fontSize = (14 + Math.random() * 10) + "px";
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 30000);
+}
+
+setInterval(spawnSticker, 2500);
 </script>
 
 </body>
