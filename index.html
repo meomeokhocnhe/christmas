@@ -183,7 +183,16 @@ button:hover{background:#ffd166;color:#000}
   transition:.3s;
 }
 .modal.show .modal-box{transform:scale(1)}
+.modal-box.final {
+  animation: popShake .45s ease;
+}
 
+@keyframes popShake {
+  0%   { transform: scale(.7); }
+  60%  { transform: scale(1.05); }
+  80%  { transform: scale(.97); }
+  100% { transform: scale(1); }
+}
 .hidden{display:none}
 </style>
 </head>
@@ -243,6 +252,12 @@ button:hover{background:#ffd166;color:#000}
     <button onclick="closeThinkModal()">Ừm…</button>
   </div>
 </div>
+  <div id="finalModal" class="modal">
+  <div class="modal-box">
+    <p>Vậy chốt bạn nhân viên nhé 💖</p>
+    <button onclick="closeFinalModal()">OK ✨</button>
+  </div>
+</div>
 
 <script>
 const music=document.getElementById("bgm");
@@ -276,6 +291,10 @@ function closeModal(){
   page1.classList.remove("hidden");
   typeWriter();
 }
+function closeFinalModal(){
+  finalModal.classList.remove("show");
+}
+
 
 function typeWriter(){
   if(li>=lines.length)return;
@@ -321,21 +340,20 @@ function firework(x,y){
 }
 
 function yes(){
-  const bursts = 6;        // số lần nổ
+   const bursts = 6;   // số lần pháo hoa
   let count = 0;
 
   const interval = setInterval(() => {
-    // vị trí ngẫu nhiên nhưng tránh sát mép
     const x = innerWidth * (0.2 + Math.random() * 0.6);
     const y = innerHeight * (0.2 + Math.random() * 0.4);
-
     firework(x, y);
     count++;
 
-    if (count >= bursts) {
+    if(count >= bursts){
       clearInterval(interval);
+      // ⏱️ đợi pháo hoa xong rồi mới hiện modal
       setTimeout(() => {
-        alert("Hẹn bạn ở rạp nhé 💖🍿");
+        finalModal.classList.add("show");
       }, 600);
     }
   }, 300);
@@ -357,6 +375,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
