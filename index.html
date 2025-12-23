@@ -218,7 +218,7 @@ button:hover{background:#ffd166;color:#000}
       <div class="trunk"></div>
     </div>
     <p id="typeText"></p>
-    <button onclick="goPage2()">Tiếp nè 👉</button>
+    <button onclick="goPage2()">Trang sauuu</button>
   </div>
 
   <div class="box hidden" id="page2">
@@ -250,12 +250,23 @@ const lines=["Giáng sinh vui vẻ ❄️"];
 let li=0,ci=0,thinkCount=0;
 
 function unlock(){
-  const v=code.value;
-  if(v==="2602")passMessage.innerText="hình như bạn nhớ đến mình :>";
-  else if(v==="0208")passMessage.innerText="vì bạn nên mùa đông ấm áp";
-  else if(v==="0611")passMessage.innerText="hình như bạn nhớ đến một ngày rất rất đặc biệt";
-  else{error.innerText="❌ Chưa đúng rồi… thử lại nhé 🎄";return}
-  music.volume=.4;music.play().catch(()=>{});
+    const v = code.value;
+
+  if(v==="2602") passMessage.innerText="hình như bạn nhớ đến mình :>";
+  else if(v==="0208") passMessage.innerText="vì bạn nên mùa đông ấm áp";
+  else if(v==="0611") passMessage.innerText="hình như bạn nhớ đến một ngày rất rất đặc biệt";
+  else{
+    error.innerText="❌ Chưa đúng rồi… thử lại nhé 🎄";
+    return;
+  }
+
+  // 🔊 PHÁT NHẠC NGAY TRONG USER ACTION
+  music.volume = 0.45;
+  music.currentTime = 0;
+  music.play().catch(err=>{
+    console.log("Autoplay bị chặn:", err);
+  });
+
   passModal.classList.add("show");
 }
 
@@ -346,3 +357,4 @@ setInterval(()=>{
 
 </body>
 </html>
+
